@@ -1,0 +1,99 @@
+//Kamil Mrowiec
+//Student ID: 21308225
+public class MyToolBox{
+    public static String timeOfDay(){
+
+        final long MILLISECONDS_IN_A_DAY = 24*60*60*1000;
+        final long SECONDS_IN_AN_HOUR = 60*60;
+        long millisSinceMidnight =0, secondsSinceMidnight = 0;
+        long hour = 0, minute = 0, second = 0;
+        millisSinceMidnight = System.currentTimeMillis()%MILLISECONDS_IN_A_DAY;
+        secondsSinceMidnight = millisSinceMidnight/1000;
+        hour = secondsSinceMidnight/SECONDS_IN_AN_HOUR;
+        minute = (secondsSinceMidnight % SECONDS_IN_AN_HOUR)/60;
+        second = secondsSinceMidnight % 60;
+        String time;
+        time = String.format("%02d:%02d:%02d",hour, minute, second);
+        return time;
+
+    }
+
+    public static void tweetHeader(int width){
+        if(width <= 0){
+            width = 0;
+        }
+        else if(width < 10) {
+            width = 10;
+        }
+        else if(width > 80){
+            width = 80;
+        }
+
+        for(int i = 1; i <= (width / 10); i++){
+            System.out.printf("         ");
+            System.out.print( i );
+        }
+
+        System.out.println();
+
+        for(int i = 1; i < width + 1; i++){
+            System.out.print( i % 10 );
+        }
+
+        System.out.println();
+
+        System.out.println( "=".repeat(width));
+    }
+
+    public static void displayTweet(String tweetText, int width){
+        if(tweetText.length() > 0){
+            if(width <1){
+                width = 10;
+            }
+            else if(width > 80){
+                width = 80;
+            }
+            tweetHeader(width);
+            int segment = 0;
+            while (segment < tweetText.length()) {
+                if(segment+width<tweetText.length()) {
+                    System.out.println(tweetText.substring(segment, segment+width));
+                }
+                else {
+                    System.out.println(tweetText.substring(segment, tweetText.length()));
+                }
+                segment+=width;;;
+            }
+        }
+    }
+
+    public static int countOf(String tweetText, char symbol){
+        int characters = -1;
+        if(symbol != '#' && symbol != '@'){
+            characters = -1;
+
+        }
+        else{characters = tweetText.length() - tweetText.replace(Character.toString(symbol),"").length();
+        }
+
+        return characters;
+    }
+    
+    public static void analyse(String tweetText, int width){
+        MyToolBox.displayTweet(tweetText, width);
+        MyToolBox.countOf(tweetText, '#');
+        MyToolBox.countOf(tweetText, '@');
+        if(MyToolBox.countOf(tweetText, '#') > 1){
+            System.out.printf("%02d Hashtags", MyToolBox.countOf(tweetText, '#'));
+        }
+        else if(MyToolBox.countOf(tweetText, '#') == 1){
+               System.out.printf("01 Hashtag");
+            }
+        if(MyToolBox.countOf(tweetText, '@') > 1){
+            System.out.printf("\n%02d Usernames", MyToolBox.countOf(tweetText, '@'));
+        }
+        else if(MyToolBox.countOf(tweetText, '@') == 1){
+            System.out.printf("\n01 Username");
+        }
+    }
+}
